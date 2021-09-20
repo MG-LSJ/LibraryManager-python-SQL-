@@ -53,7 +53,10 @@ Do not change anything if using defaults in MySQL.
 
 ![image](https://user-images.githubusercontent.com/73988826/133984139-50a13548-b3f9-46fb-8108-d6b248799ac1.png)
 
-How to Launch
+<h3>How to Launch</h3>
+
 Click on launch.bat
-OR 
+
+<b>OR</b>
+
 Open main.py in a python compiler of choice.
