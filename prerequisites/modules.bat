@@ -1,3 +1,1 @@
-pip install tk
-pip install pymysql
-pip install pillow
+pip install tk, pymysql, pillow, cryptography

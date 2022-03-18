@@ -1,7 +1,5 @@
 from tkinter import *
-from PIL import ImageTk,Image
-import pymysql
-from tkinter import messagebox,ttk
+import PIL.Image, PIL.ImageTk
 
 from modules.AddBook import *
 from modules.DeleteBook import *
@@ -9,110 +7,181 @@ from modules.ViewBooks import *
 from modules.Sounds import click
 from modules.IssueBook import *
 from modules.ReturnBook import *
+from modules.Credentials import *
 
-root = Tk()
+if check_cred():
 
-root.title("Library Manager AVBIL")
-root.minsize(848, 480)
-root.iconbitmap("media\logo.ico")
+    # Check clear
+    add_close()
+    del_close()
+    issue_close()
+    rtn_close()
+    view_close()
 
+    root = Tk()
 
-img = ImageTk.PhotoImage(Image.open("media\lib.png"))
-Canvas = Canvas(root, width = 960, height = 540)     
-Canvas.pack(fill = BOTH, expand = True)
-Canvas.create_image(0,0,image = img, anchor="nw") 
+    root.title("Library Manager AVBIL")
+    root.minsize(848, 480)
+    root.iconbitmap("media\logo.ico")
 
-headingFrame1 = Frame(root, bg = "#2F2F87", bd = 5)
-headingFrame1.place(relx = 0.2, rely = 0.1, relwidth = 0.6, relheight = 0.16)
-headingLabel = Label(headingFrame1, text="AVBIL Library Manager", bg='#121212', fg='white', font=('Segoe UI',30))
-headingLabel.place(relx = 0, rely = 0, relwidth = 1, relheight =1)
+    img = PIL.ImageTk.PhotoImage(PIL.Image.open("media\lib.png"))
+    Canvas = Canvas(root, width=960, height=540)
+    Canvas.pack(fill=BOTH, expand=True)
+    Canvas.create_image(0, 0, image=img, anchor="nw")
 
-status_label = Label(root, text = "Made by Lakshyajeet Jalal and Sagar Giri ", bg = "#121212", fg = "white", relief = SUNKEN, font = ('Segoe UI',10), anchor = E)
-status_label.pack(fill = X, side = BOTTOM, ipady = 2)
+    # Heading Frame
+    headingFrame1 = Frame(root, bg="#2F2F87", bd=5)
+    headingFrame1.place(relx=0.2, rely=0.1, relwidth=0.6, relheight=0.16)
 
-#Button 1
-btn1 = Button(root, text = "Add Book", bg = '#121212', fg = 'white', font=('Segoe UI',20), command = lambda:[click(),add_open(),addBook()])
-btn1.place(relx = 0.28, rely = 0.4, relwidth = 0.45, relheight = 0.09)
+    # Heading Label
+    headingLabel = Label(
+        headingFrame1,
+        text="AVBIL Library Manager",
+        bg="#121212",
+        fg="white",
+        font=("Segoe UI", 30),
+    )
+    headingLabel.place(relx=0, rely=0, relwidth=1, relheight=1)
 
-def btn1_hoverin(event):
-    btn1["bg"] = "#222222"
-    btn1["font"]= 'Segoe UI',22
-    status_label.config(text = "Click To Add Book ")
-    
-def btn1_hoverout(event):
-    btn1["bg"] = "#121212"
-    btn1["font"]= 'Segoe UI',20
-    status_label.config(text = "Made by Lakshyajeet Jalal and Sagar Giri ")
-    
-btn1.bind("<Enter>", btn1_hoverin)
-btn1.bind("<Leave>", btn1_hoverout)
+    # Status Label
+    status_label = Label(
+        root,
+        text="Made by Lakshyajeet Jalal and Sagar Giri ",
+        bg="#121212",
+        fg="white",
+        relief=SUNKEN,
+        font=("Segoe UI", 10),
+        anchor=E,
+    )
+    status_label.pack(fill=X, side=BOTTOM, ipady=2)
 
-#Button 2
-btn2 = Button(root, text= "Delete Book", bg = '#121212', fg = 'white', font=('Segoe UI',20), command = lambda:[click(), del_open(),delete()])
-btn2.place(relx = 0.28, rely = 0.5, relwidth = 0.45, relheight = 0.09)
+    # Status Label reset
+    def status_label_rst():
+        status_label.config(text="Made by Lakshyajeet Jalal and Sagar Giri ")
 
-def btn2_hoverin(event):
-    btn2["bg"] = "#222222"
-    btn2["font"]= 'Segoe UI',22
-    status_label.config(text = "Click To Delete Book ")
-    
-def btn2_hoverout(event):
-    btn2["bg"] = "#121212"
-    btn2["font"]= 'Segoe UI',20
-    status_label.config(text = "Made by Lakshyajeet Jalal and Sagar Giri ")
-    
-btn2.bind("<Enter>", btn2_hoverin)
-btn2.bind("<Leave>", btn2_hoverout)
+    # addBook Button
+    addBookBtn = Button(
+        root,
+        text="Add Book",
+        bg="#121212",
+        fg="white",
+        font=("Segoe UI", 20),
+        command=lambda: [click(), add_open(), addBookWin()],
+    )
+    addBookBtn.place(relx=0.28, rely=0.4, relwidth=0.45, relheight=0.09)
 
-#Button 3    
-btn3 = Button(root, text= "View Book List", bg = '#121212', fg = 'white', font=('Segoe UI',20), command = lambda:[click(), view_open(), View()])
-btn3.place(relx = 0.28, rely= 0.6, relwidth = 0.45,relheight = 0.09)
-  
-def btn3_hoverin(event):
-    btn3["bg"] = "#222222"
-    btn3["font"]= 'Segoe UI',22
-    status_label.config(text = "Click To View Book List ")
-    
-def btn3_hoverout(event):
-    btn3["bg"] = "#121212"
-    btn3["font"]= 'Segoe UI',20
-    status_label.config(text = "Made by Lakshyajeet Jalal and Sagar Giri ")
-    
-btn3.bind("<Enter>", btn3_hoverin)
-btn3.bind("<Leave>", btn3_hoverout)
+    def addBookBtn_hoverin(event):
+        addBookBtn["bg"] = "#222222"
+        addBookBtn["font"] = "Segoe UI", 22
+        status_label.config(text="Click To Add Book ")
 
-#Button 4  
-btn4 = Button(root, text= "Issue Book", bg = '#121212', fg = 'white', font=('Segoe UI',20), command = lambda:[click(), issue_open(), issueBook()])
-btn4.place(relx = 0.28, rely= 0.7, relwidth = 0.45,relheight = 0.09)
+    def addBookBtn_hoverout(event):
+        addBookBtn["bg"] = "#121212"
+        addBookBtn["font"] = "Segoe UI", 20
+        status_label_rst()
 
-def btn4_hoverin(event):
-    btn4["bg"] = "#222222"
-    btn4["font"]= 'Segoe UI',22
-    status_label.config(text = "Click To Issue Book ")
-    
-def btn4_hoverout(event):
-    btn4["bg"] = "#121212"
-    btn4["font"]= 'Segoe UI',20
-    status_label.config(text = "Made by Lakshyajeet Jalal and Sagar Giri ")
-    
-btn4.bind("<Enter>", btn4_hoverin)
-btn4.bind("<Leave>", btn4_hoverout)
+    addBookBtn.bind("<Enter>", addBookBtn_hoverin)
+    addBookBtn.bind("<Leave>", addBookBtn_hoverout)
 
-#Button 5   
-btn5 = Button(root, text= "Return Book", bg= '#121212', fg = 'white', font=('Segoe UI',20), command = lambda:[click(), rtn_open(), returnBook()])
-btn5.place(relx = 0.28, rely= 0.8, relwidth = 0.45,relheight = 0.09) 
+    # delBook Button
+    delBookBtn = Button(
+        root,
+        text="Delete Book",
+        bg="#121212",
+        fg="white",
+        font=("Segoe UI", 20),
+        command=lambda: [click(), del_open(), deleteBookWin()],
+    )
+    delBookBtn.place(relx=0.28, rely=0.5, relwidth=0.45, relheight=0.09)
 
-def btn5_hoverin(event):
-    btn5["bg"] = "#222222"
-    btn5["font"]= 'Segoe UI',22
-    status_label.config(text = "Click To Return Book ")
-    
-def btn5_hoverout(event):
-    btn5["bg"] = "#121212"
-    btn5["font"]= 'Segoe UI',20
-    status_label.config(text = "Made by Lakshyajeet Jalal and Sagar Giri ")
-    
-btn5.bind("<Enter>", btn5_hoverin)
-btn5.bind("<Leave>", btn5_hoverout)
+    def delBookBtn_hoverin(event):
+        delBookBtn["bg"] = "#222222"
+        delBookBtn["font"] = "Segoe UI", 22
+        status_label.config(text="Click To Delete Book ")
 
-root.mainloop()
+    def delBookBtn_hoverout(event):
+        delBookBtn["bg"] = "#121212"
+        delBookBtn["font"] = "Segoe UI", 20
+        status_label_rst()
+
+    delBookBtn.bind("<Enter>", delBookBtn_hoverin)
+    delBookBtn.bind("<Leave>", delBookBtn_hoverout)
+
+    # viewBook Button
+    viewBookBtn = Button(
+        root,
+        text="View Book List",
+        bg="#121212",
+        fg="white",
+        font=("Segoe UI", 20),
+        command=lambda: [click(), view_open(), View()],
+    )
+    viewBookBtn.place(relx=0.28, rely=0.6, relwidth=0.45, relheight=0.09)
+
+    def viewBookBtn_hoverin(event):
+        viewBookBtn["bg"] = "#222222"
+        viewBookBtn["font"] = "Segoe UI", 22
+        status_label.config(text="Click To View Book List ")
+
+    def viewBookBtn_hoverout(event):
+        viewBookBtn["bg"] = "#121212"
+        viewBookBtn["font"] = "Segoe UI", 20
+        status_label_rst()
+
+    viewBookBtn.bind("<Enter>", viewBookBtn_hoverin)
+    viewBookBtn.bind("<Leave>", viewBookBtn_hoverout)
+
+    # issueBook Button
+    issueBookBtn = Button(
+        root,
+        text="Issue Book",
+        bg="#121212",
+        fg="white",
+        font=("Segoe UI", 20),
+        command=lambda: [click(), issue_open(), issueBook()],
+    )
+    issueBookBtn.place(relx=0.28, rely=0.7, relwidth=0.45, relheight=0.09)
+
+    def issueBookBtn_hoverin(event):
+        issueBookBtn["bg"] = "#222222"
+        issueBookBtn["font"] = "Segoe UI", 22
+        status_label.config(text="Click To Issue Book ")
+
+    def issueBookBtn_hoverout(event):
+        issueBookBtn["bg"] = "#121212"
+        issueBookBtn["font"] = "Segoe UI", 20
+        status_label_rst()
+
+    issueBookBtn.bind("<Enter>", issueBookBtn_hoverin)
+    issueBookBtn.bind("<Leave>", issueBookBtn_hoverout)
+
+    # returnBook Button
+    returnBookBtn = Button(
+        root,
+        text="Return Book",
+        bg="#121212",
+        fg="white",
+        font=("Segoe UI", 20),
+        command=lambda: [click(), rtn_open(), returnBook()],
+    )
+    returnBookBtn.place(relx=0.28, rely=0.8, relwidth=0.45, relheight=0.09)
+
+    def returnBookBtn_hoverin(event):
+        returnBookBtn["bg"] = "#222222"
+        returnBookBtn["font"] = "Segoe UI", 22
+        status_label.config(text="Click To Return Book ")
+
+    def returnBookBtn_hoverout(event):
+        returnBookBtn["bg"] = "#121212"
+        returnBookBtn["font"] = "Segoe UI", 20
+        status_label_rst()
+
+    returnBookBtn.bind("<Enter>", returnBookBtn_hoverin)
+    returnBookBtn.bind("<Leave>", returnBookBtn_hoverout)
+
+    def confirm():
+        if messagebox.askyesno(title="Confirm", message="Are you sure that you want to quit?"):
+            root.destroy()
+
+    root.protocol("WM_DELETE_WINDOW", lambda: [click(), confirm()])
+    root.mainloop()

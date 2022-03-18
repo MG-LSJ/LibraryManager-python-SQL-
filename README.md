@@ -28,6 +28,10 @@ pip install pillow
 ```sh
 pip install cryptography
 ``` 
+- Playsound
+```sh
+pip install playsound
+``` 
 <h3>Authentication</h3>
 
 Enter your MySQL connection details on the credentials window
@@ -44,4 +48,4 @@ Open main.py in a python compiler of choice.
 
 <b>OR</b>
 
-Click on run.exe
+Click on main.exe
