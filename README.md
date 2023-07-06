@@ -2,7 +2,7 @@
 
 AVBIL Library Manager
 -------------
-Precompiled ese is for windows 10 64bit
+Precompiled exe is for windows 10 64bit
 
 <h3>Software Requirements:</h3>
 
