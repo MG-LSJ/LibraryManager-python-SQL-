@@ -7,10 +7,10 @@ AVBIL Library Manager
 <h3>Software Requirements:</h3>
 
 - Python 3.x
-- MySQL
+- MySQL (**required)
 - Pip (To install modules)
 
-<h3>Python (Required Modules)</h3>
+<h3>Python (Required Modules to run .py file)</h3>
 
 - Tkinter
 ```sh
